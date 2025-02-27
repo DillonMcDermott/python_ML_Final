@@ -1,2 +1,3 @@
 # python_ML_Final
-python Mashine Learning final project repository
+python Machine Learning final project repository
+Members: Bryleigh Koci, Dillon McDermott, Sam Brassard
