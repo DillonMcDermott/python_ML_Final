@@ -1,10 +1,4 @@
 Title:
 Car Price Prediction Model
 
-
-Abstract:
-This project aims to develop a machine learning model for predicting car prices.
-The model will be written in Python and trained using a car pricing dataset from Kaggle.
-Some examples of data points in this dataset are: price, production year, engine size, mileage, and owner count.
-Once trained this model can be used by car owners looking to sell their car or dealerships pricing a used car.
-
+  This project focuses on developing a machine learning model to accurately predict car prices based on key vehicle attributes. Implemented in Python, the model will be trained using a car pricing dataset from Kaggle (https://www.kaggle.com/datasets/asinow/car-price-dataset), which includes data points such as price, production year, engine size, mileage, and the number of previous owners. By using machine learning, the model searches for patterns in historical pricing data. This will allow it to make predictions on a vehicle's future price. The primary goal of this project is to provide a reliable tool for individuals and businesses selling used cars. Car owners looking to sell their vehicles can use this model to estimate a price, while dealerships can use it to make pricing strategies. Ultimately, this project aims to streamline the car evaluation process, reducing reliance on manual assessments and improving pricing transparency for buyers and sellers.
