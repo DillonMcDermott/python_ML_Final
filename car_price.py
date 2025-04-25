@@ -6,6 +6,7 @@ from sklearn.tree import DecisionTreeRegressor
 from sklearn.linear_model import LinearRegression
 from sklearn.metrics import mean_absolute_error, r2_score
 import matplotlib.pyplot as plt
+import seaborn as sns
 
 # Load dataset
 df = pd.read_csv("car_price_prediction_.csv")
@@ -15,12 +16,43 @@ print(df.head())
 print(df.info())
 print(df.describe())
 
-#Feature Engineering
+# Check column names to ensure "Brand" column exists and no extra spaces
+print("Columns before any processing:", df.columns)
+
+# Strip any leading/trailing spaces from the column names
+df.columns = df.columns.str.strip()
+
+# Check again after stripping
+print("Columns after stripping spaces:", df.columns)
+
+# Visualize distribution of the Price
+plt.figure(figsize=(8, 4))
+sns.histplot(df["Price"], bins=50, kde=True)
+plt.title("Distribution of Car Prices")
+plt.xlabel("Price")
+plt.ylabel("Count")
+plt.tight_layout()
+plt.show()
+
+# Feature Engineering
 
 df = df.drop(["Car ID", "Model"], axis=1)
+
+# Add car age instead of using Year directly
+df["Car_Age"] = 2025 - df["Year"]
+df = df.drop("Year", axis=1)
+
 # Change Columns into numbers
 df = pd.get_dummies(df, columns=["Brand", "Transmission", "Fuel Type", "Condition"], drop_first=True)
+
+# Remove outliers in price
+df = df[(df["Price"] >= 7000) & (df["Price"] <= 90000)]
+
+# Drop rows with any missing values
 df = df.dropna()
+
+# Check if "Brand" column exists after transformation
+print("Columns after feature engineering:", df.columns)
 
 # Split into features (X) and target (y)
 X = df.drop("Price", axis=1)
@@ -75,8 +107,14 @@ for name, model in models.items():
     plt.tight_layout()
     plt.show()
 
+# Simple baseline: predict mean price
+baseline_pred = [np.expm1(y_train).mean()] * len(y_test)  # use expm1 to reverse the log1p transform
+baseline_mae = mean_absolute_error(np.expm1(y_test), baseline_pred)
 
-#Rank Models
+print(f"\nBaseline Mean Absolute Error (predicting mean price): {baseline_mae:.2f}")
+
+
+# Rank Models
 best_mae_model = min(results, key=lambda x: results[x]["MAE"])
 best_r2_model = max(results, key=lambda x: results[x]["R2"])
 
