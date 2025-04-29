@@ -12,6 +12,8 @@ from sklearn.impute import SimpleImputer
 from sklearn.base import BaseEstimator, TransformerMixin
 from sklearn.preprocessing import OneHotEncoder
 import matplotlib.pyplot as plt
+import joblib
+
 
 # Load dataset
 df = pd.read_csv("car_price_prediction.csv")
@@ -118,6 +120,9 @@ for name, model in models.items():
     # Best model and parameters
     print(f"Best parameters for {name}: {grid_search.best_params_}")
 
+    # Save the Model
+    joblib.dump(grid_search.best_estimator_, f"{name.replace(' ', '_').lower()}_model.pkl")
+
     # Make predictions with the best model
     y_pred = np.expm1(grid_search.best_estimator_.predict(X_test))
 
@@ -141,10 +146,10 @@ for name, model in models.items():
     plt.show()
 
 # Simple baseline: predict mean price
-baseline_pred = [np.expm1(y_train).mean()] * len(y_test)  # use expm1 to reverse the log1p transform
+baseline_pred = [np.expm1(y_train).mean()] * len(y_test)
 baseline_mae = mean_absolute_error(np.expm1(y_test), baseline_pred)
 
-print(f"\nBaseline Mean Absolute Error (predicting mean price): {baseline_mae:.2f}")
+print(f"Baseline Mean Absolute Error (predicting mean price): {baseline_mae:.2f}")
 
 # Rank Models
 best_mae_model = min(results, key=lambda x: results[x]["MAE"])
